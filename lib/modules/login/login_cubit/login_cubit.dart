@@ -1,0 +1,59 @@
+import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialapp/models/user_model/user_model.dart';
+import 'package:socialapp/modules/login/login_cubit/login_states.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:socialapp/shared/network/local/cache_helper.dart';
+
+
+class LoginCubit extends Cubit<LoginStates>{
+  LoginCubit() : super(LoginInitialState());
+  static LoginCubit get(context) => BlocProvider.of(context);
+
+  UserModel? userModel;
+  void userLogin({
+    required String email,
+    required String password,
+  }){
+    emit(LoginLoadingState());
+    FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+    ).then((onValue){
+      // Fetch user data from FireStore
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(onValue.user!.uid)
+          .get()
+          .then((documentSnapshot) async {
+        if (documentSnapshot.exists) {
+          // Convert FireStore document to UserModel
+          userModel = UserModel.fromJson(documentSnapshot.data()!);
+          // Save UserModel to SharedPreferences
+          await CacheHelper.saveUserData(userModel);
+          // Emit success state with userModel
+          emit(LoginSuccessState(userModel));
+        } else {
+          emit(LoginErrorState(" LoginCubit 39:User data not found in Firestore."));
+        }
+      }).catchError((onError) {
+        emit(LoginErrorState("Error fetching user data: ${onError.toString()}"));
+      }); // Save UserModel to SharedPreferences
+      emit(LoginSuccessState(userModel));
+    }).catchError((onError){
+      emit(LoginErrorState(onError.toString()));
+    });
+  }
+
+  //Change Password Visibility
+  IconData suffix = Icons.remove_red_eye;
+  bool isPassword = true;
+  void changePasswordVisibility(){
+    isPassword = !isPassword;
+    suffix = isPassword? Icons.remove_red_eye : Icons.remove_red_eye_outlined;
+    emit(LoginChangePasswordVisibilityState());
+  }
+
+}
