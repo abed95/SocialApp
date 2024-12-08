@@ -49,7 +49,7 @@ class LoginScreen extends StatelessWidget {
                         children: [
                           titleText(title: 'LOGIN', context: context),
                           bodyText(
-                              body: 'Login now to browse an amazing offers',
+                              body: 'Login now to contact with your friends now!',
                               context: context),
                           const SizedBox(
                             height: 45,
