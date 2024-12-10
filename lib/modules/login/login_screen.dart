@@ -25,7 +25,7 @@ class LoginScreen extends StatelessWidget {
         listener: (context,state){
           if(state is LoginSuccessState){
             showToast(message: 'Login Success ${state.userModel!.name}', state: ToastStates.SUCCESS);
-            navigateAndFinish(context, SocialLayout(name:state.userModel!.name,));
+            navigateAndFinish(context, SocialLayout());
           }else if(state is LoginErrorState){
             showToast(message: state.error, state: ToastStates.ERROR);
           }

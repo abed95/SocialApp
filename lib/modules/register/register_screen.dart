@@ -54,7 +54,7 @@ class RegisterScreen extends StatelessWidget {
           }
 
           if(state is RegisterCreateUserSuccessState){
-            navigateAndFinish(context, SocialLayout(name: state.model!.name,));
+            navigateAndFinish(context, SocialLayout());
           }else if(state is RegisterCreateUserErrorState){
             showToast(message: state.error, state: ToastStates.ERROR);
           }

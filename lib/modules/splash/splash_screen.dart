@@ -19,12 +19,10 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () {
       String? userID;
-      String? name;
       CacheHelper.getUserData().then((onValue) {
         userID = onValue!.userID;
-        name = onValue.name;
         print('Splash 25 : $userID');
-        navigateAndFinish(context, SocialLayout(name:name,));
+        navigateAndFinish(context, SocialLayout());
       }).catchError((onError) {
         navigateAndFinish(context, LoginScreen());
         print('Splash 25${onError.toString()}');

@@ -34,12 +34,12 @@ class LoginCubit extends Cubit<LoginStates>{
           // Save UserModel to SharedPreferences
           await CacheHelper.saveUserData(userModel);
           // Emit success state with userModel
-          emit(LoginSuccessState(userModel));
+          emit(LoginGetUserDataSuccessState(userModel));
         } else {
-          emit(LoginErrorState(" LoginCubit 39:User data not found in Firestore."));
+          emit(LoginGetUserDataErrorState(" LoginCubit 39:User data not found in Firestore."));
         }
       }).catchError((onError) {
-        emit(LoginErrorState("Error fetching user data: ${onError.toString()}"));
+        emit(LoginGetUserDataErrorState("Error fetching user data: ${onError.toString()}"));
       }); // Save UserModel to SharedPreferences
       emit(LoginSuccessState(userModel));
     }).catchError((onError){
