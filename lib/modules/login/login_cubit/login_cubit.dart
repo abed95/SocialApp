@@ -41,7 +41,6 @@ class LoginCubit extends Cubit<LoginStates>{
       }).catchError((onError) {
         emit(LoginGetUserDataErrorState("Error fetching user data: ${onError.toString()}"));
       }); // Save UserModel to SharedPreferences
-      emit(LoginSuccessState(userModel));
     }).catchError((onError){
       emit(LoginErrorState(onError.toString()));
     });

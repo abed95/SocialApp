@@ -3,8 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/models/user_model/user_model.dart';
 
 class CacheHelper {
+  static UserModel? userModel= null;
   static late SharedPreferences sharedPreference;
-
   static init() async {
     sharedPreference = await SharedPreferences.getInstance();
   }
@@ -35,6 +35,24 @@ class CacheHelper {
     final prefs = await SharedPreferences.getInstance();
     String? userData = jsonEncode(user!.toMap()); // Convert to JSON
     await prefs.setString('user_data', userData);
+  }
+
+  static bool isLogin() => sharedPreference.containsKey('user_data') ?? false;
+
+  static Future<UserModel?> getUserDataNew() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? userData = prefs.getString('user_data');
+    print('getUserData: CacheHelper $userData');
+    if (userData != null) {
+      try{
+        Map<String?, dynamic> userMap = jsonDecode(userData); // Deserialize JSON
+        userModel = UserModel.fromJson(userMap);
+        return userModel;
+      }catch(e){
+        return null;
+      }
+    }
+    return null;
   }
 
   //Get user Data

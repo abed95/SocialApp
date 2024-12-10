@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:socialapp/modules/splash/splash_screen.dart';
 import 'package:socialapp/shared/bloc_observer.dart';
 import 'package:socialapp/shared/network/local/cache_helper.dart';
+import 'package:socialapp/shared/styles/themes.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,8 +21,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: lightTheme,
       home: SplashScreen(),
     );
   }

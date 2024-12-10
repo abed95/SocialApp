@@ -17,19 +17,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
-      String? userID;
-      //test
-      CacheHelper.getUserData().then((onValue) {
-        userID = onValue!.userID;
-        print('Splash 25 : $userID');
-        navigateAndFinish(context, SocialLayout());
-      }).catchError((onError) {
-        navigateAndFinish(context, LoginScreen());
-        print('Splash 25${onError.toString()}');
-      });
-    }
-    );
+
+    initMyData();
+
   }
 
 
@@ -47,6 +37,42 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void initMyData() {
+    Future.delayed(const Duration(seconds: 3), () async {
+      String? userID;
+      //1111
+      // if(CacheHelper.isLogin()){
+      //   navigateAndFinish(context, SocialLayout());
+      // }else{
+      //   navigateAndFinish(context, LoginScreen());
+      // }
+
+      //2222
+      if(CacheHelper.isLogin()){
+        await CacheHelper.getUserDataNew();
+        if(CacheHelper.userModel != null){
+          navigateAndFinish(context, SocialLayout());
+        }else{
+          navigateAndFinish(context, LoginScreen());
+        }
+      }else{
+        navigateAndFinish(context, LoginScreen());
+      }
+
+
+
+      // CacheHelper.getUserData().then((onValue) {
+      //   userID = onValue!.userID;
+      //   print('Splash 25 : $userID');
+      //   navigateAndFinish(context, SocialLayout());
+      // }).catchError((onError) {
+      //   navigateAndFinish(context, LoginScreen());
+      //   print('Splash 25${onError.toString()}');
+      // });
+    }
     );
   }
 }

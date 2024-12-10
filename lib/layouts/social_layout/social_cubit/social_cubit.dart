@@ -11,6 +11,10 @@ class SocialCubit extends Cubit<SocialStates>{
 
   UserModel? model;
   void getUserData(){
+  }
 
+  //Change App Theme
+  void changeThemeMode(isDark){
+    if(isDark)
   }
 }
