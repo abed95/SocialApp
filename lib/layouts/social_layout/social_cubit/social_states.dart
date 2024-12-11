@@ -18,3 +18,7 @@ class SocialGetUserDataErrorState extends SocialStates{
 //Change Theme data
 class ChangeThemeModeSuccessState extends SocialStates{}
 class ChangeThemeModeErrorState extends SocialStates{}
+
+//Change Bottom Nav
+
+class ChangeBottomNavSuccessState extends SocialStates{}
