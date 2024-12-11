@@ -22,3 +22,4 @@ class ChangeThemeModeErrorState extends SocialStates{}
 //Change Bottom Nav
 
 class ChangeBottomNavSuccessState extends SocialStates{}
+class ChangeNewPostState extends SocialStates{}

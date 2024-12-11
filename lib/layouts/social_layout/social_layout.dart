@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialapp/layouts/social_layout/social_cubit/social_cubit.dart';
 import 'package:socialapp/layouts/social_layout/social_cubit/social_states.dart';
+import 'package:socialapp/modules/new_post/new_post_screen.dart';
 import 'package:socialapp/shared/components/components.dart';
 import 'package:socialapp/shared/components/constants.dart';
 import 'package:socialapp/shared/network/local/cache_helper.dart';
@@ -14,7 +15,11 @@ class SocialLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state is ChangeNewPostState){
+          navigateTo(context, NewPostScreen(),);
+        }
+      },
       builder: (context, state) {
         var cubit = SocialCubit.get(context);
         print('Email verified value 18 SL::> ${cubit.model?.isEmailVerified}');
@@ -109,6 +114,12 @@ class SocialLayout extends StatelessWidget {
                 label: 'Chats',
                 icon: Icon(
                   Icons.chat,
+                ),
+              ),
+              BottomNavigationBarItem(
+                label: 'Post',
+                icon: Icon(
+                  Icons.post_add,
                 ),
               ),
               BottomNavigationBarItem(

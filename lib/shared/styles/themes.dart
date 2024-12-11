@@ -42,7 +42,13 @@ ThemeData lightTheme = ThemeData(
     bodyMedium: TextStyle(
       fontSize:14,
       color: Colors.black,
+      fontWeight: FontWeight.w600,
+      height: 1.3,
     ),
+      bodySmall: TextStyle(
+          fontSize: 8,
+          color: Colors.grey
+      ),
   ),
   inputDecorationTheme: const InputDecorationTheme(
     labelStyle: TextStyle(color: Colors.black),
@@ -108,6 +114,12 @@ ThemeData darkTheme = ThemeData(
     bodyMedium: TextStyle(
       fontSize:14,
       color: Colors.white,
+      fontWeight: FontWeight.w600,
+      height: 1.3,
+    ),
+    bodySmall: TextStyle(
+      fontSize: 8,
+      color: Colors.grey
     ),
   ),
   inputDecorationTheme:const InputDecorationTheme(

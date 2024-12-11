@@ -72,7 +72,11 @@ int currentIndex = 0;
   ];
 
   void changeBottomNav(int index){
-    currentIndex = index;
-    emit(ChangeBottomNavSuccessState());
+    if(index==2) {
+      emit(ChangeNewPostState());
+    }else{
+      currentIndex = index;
+      emit(ChangeBottomNavSuccessState());
+    }
   }
 }
