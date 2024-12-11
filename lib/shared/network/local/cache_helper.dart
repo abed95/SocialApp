@@ -39,6 +39,7 @@ class CacheHelper {
 
   static bool isLogin() => sharedPreference.containsKey('user_data') ?? false;
 
+  //Get User Data Ibrahim
   static Future<UserModel?> getUserDataNew() async {
     final prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString('user_data');

@@ -113,7 +113,7 @@ ThemeData darkTheme = ThemeData(
   inputDecorationTheme:const InputDecorationTheme(
     labelStyle: TextStyle(color: Colors.white),
     enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.grey),
+      borderSide: BorderSide(color: Colors.white),
     ),
     focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(color: defaultColor, width: 2,),
@@ -125,7 +125,7 @@ ThemeData darkTheme = ThemeData(
       borderSide: BorderSide(color: Colors.red,width: 2,),
     ),
     disabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.grey),
+      borderSide: BorderSide(color: Colors.white),
     ),
     focusColor: defaultColor, // Color when focused
   ),

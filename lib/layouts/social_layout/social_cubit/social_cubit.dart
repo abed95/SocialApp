@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialapp/layouts/social_layout/social_cubit/social_states.dart';
 import 'package:socialapp/models/user_model/user_model.dart';
+import 'package:socialapp/shared/network/local/cache_helper.dart';
 
 class SocialCubit extends Cubit<SocialStates>{
 
@@ -9,12 +11,42 @@ class SocialCubit extends Cubit<SocialStates>{
   static SocialCubit get(context) => BlocProvider.of(context);
 
 
-  UserModel? model;
-  void getUserData(){
+  bool? isVerified;
+  Future<bool?> checkEmailVerification()async{
+    return isVerified = FirebaseAuth.instance.currentUser!.emailVerified;
   }
 
-  //Change App Theme
-  void changeThemeMode(isDark){
-    if(isDark)
+  UserModel? model;
+  void getUserData()async{
+    emit(SocialGetUserDataLoadingState());
+    await CacheHelper.getUserDataNew()
+        .then((onValue){
+          model = onValue;
+          print('SocialCubit 19 model from shared::: $model');
+          emit(SocialGetUserDataSuccessState(onValue));
+    })
+        .catchError((onError){
+          emit(SocialGetUserDataErrorState(onError.toString()));
+    });
+  }
+
+  //Change App Theme Mode
+  bool isDarkCubit = false;
+  void changeThemeMode({bool? fromShared}){
+    if(fromShared != null){
+      isDarkCubit = !fromShared;
+      CacheHelper.saveData(key: 'isDark', value: isDarkCubit).then((onValue){
+        emit(ChangeThemeModeSuccessState());
+      }).catchError((onError){
+        emit(ChangeThemeModeErrorState());
+      });
+    }else{
+      isDarkCubit = !isDarkCubit;
+      CacheHelper.saveData(key: 'isDark', value: isDarkCubit).then((onValue){
+        emit(ChangeThemeModeSuccessState());
+      }).catchError((onError){
+        emit(ChangeThemeModeErrorState());
+      });
+    }
   }
 }
