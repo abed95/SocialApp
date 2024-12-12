@@ -5,6 +5,7 @@ import 'package:socialapp/layouts/social_layout/social_layout.dart';
 import 'package:socialapp/modules/register/register_cubit/register_cubit.dart';
 import 'package:socialapp/modules/register/register_cubit/register_states.dart';
 import '../../shared/components/components.dart';
+import '../../shared/network/local/cache_helper.dart';
 import '../../shared/styles/colors.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -22,40 +23,17 @@ class RegisterScreen extends StatelessWidget {
       create: (BuildContext context)=>RegisterCubit(),
       child: BlocConsumer<RegisterCubit,RegisterStates>(
         listener: (context,state){
-          // if(state is RegisterSuccessState){
-          //   if(state.loginModel?.status == true)
-          //   {
-          //     print({'The state is :',state});
-          //     print({'The Status of request is :',state.loginModel?.status});
-          //     CacheHelper.saveData(
-          //       key: 'token',
-          //       value: state.loginModel?.data?.token,)
-          //         .then((onValue){
-          //       token = state.loginModel!.data!.token!;
-          //     }).catchError((onError){
-          //       print({'The error is :',onError});
-          //     });
-          //
-          //     CacheHelper.saveUserData(state.loginModel).then((onValue){
-          //       navigateAndFinish(context, HomeLayout(),);
-          //       showToast(message: state.loginModel?.message, state: ToastStates.SUCCESS);
-          //     }).catchError((onError){
-          //       showToast(message: state.loginModel?.message, state: ToastStates.ERROR);
-          //     });
-          //   }else{
-          //     print({'The Status of request is :',state});
-          //     showToast(
-          //       state: ToastStates.ERROR,
-          //       message: state.loginModel?.message,
-          //     );
-          //   }
-          // }
           if(state is RegisterErrorState){
             showToast(message: state.error, state: ToastStates.ERROR);
           }
 
-          if(state is RegisterCreateUserSuccessState){
-            navigateAndFinish(context, SocialLayout());
+          if(state is RegisterSuccessState){
+            CacheHelper.getUserDataNew().then((onValue){
+              showToast(message: 'Register Success ${state.model?.name}', state: ToastStates.SUCCESS);
+              navigateAndFinish(context, SocialLayout());
+            }).catchError((onError){
+              showToast(message: 'Register Get User data error Login Screen', state: ToastStates.ERROR);
+            });
           }else if(state is RegisterCreateUserErrorState){
             showToast(message: state.error, state: ToastStates.ERROR);
           }

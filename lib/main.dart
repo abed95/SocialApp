@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialapp/layouts/social_layout/social_cubit/social_states.dart';
+import 'package:socialapp/modules/settings/settings_cubit/settings_cubit.dart';
 import 'package:socialapp/modules/splash/splash_screen.dart';
 import 'package:socialapp/shared/bloc_observer.dart';
 import 'package:socialapp/shared/network/local/cache_helper.dart';
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context)=> SocialCubit()..getUserData()),
+        BlocProvider(create: (context)=> SocialCubit()),
+        BlocProvider(create: (context)=> SettingsCubit()),
       ],
       child: BlocConsumer<SocialCubit,SocialStates>(
           listener: (context,state){},

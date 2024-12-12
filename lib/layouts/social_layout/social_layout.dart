@@ -22,7 +22,6 @@ class SocialLayout extends StatelessWidget {
       },
       builder: (context, state) {
         var cubit = SocialCubit.get(context);
-        print('Email verified value 18 SL::> ${cubit.model?.isEmailVerified}');
         return Scaffold(
           appBar: AppBar(
             title:  Text(cubit.titles[cubit.currentIndex],style: TextStyle(color: defaultColor),),

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:socialapp/models/user_model/user_model.dart';
 import 'package:socialapp/shared/components/components.dart';
+import 'package:socialapp/shared/network/local/cache_helper.dart';
 import 'package:socialapp/shared/styles/colors.dart';
 
 class FeedsScreen extends StatelessWidget {
-  const FeedsScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
+    var userModel = CacheHelper.userModel;
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Column(
@@ -18,7 +19,7 @@ class FeedsScreen extends StatelessWidget {
             child: Stack(
               alignment: AlignmentDirectional.bottomEnd,
               children:[
-                const Image(image: NetworkImage('https://img.freepik.com/free-photo/horizontal-shot-pretty-smiling-girl-skier-calls-relatives-vis-smartphone-tells-about-her-winter-vacation-wears-snowboarding-goggles_273609-32709.jpg'),
+                 Image(image: NetworkImage('${userModel?.cover}'),
                 fit: BoxFit.cover,
                 height: 200,
                 width: double.infinity,
@@ -34,15 +35,15 @@ class FeedsScreen extends StatelessWidget {
           ListView.separated(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context,index)=>buildPostItem(context),
+              itemBuilder: (context,index)=>buildPostItem(context,userModel),
               separatorBuilder: (context,index)=>SizedBox(height: 8,),
-              itemCount: 10),
+              itemCount: 1),
           SizedBox(height: 8,),
         ],
       ),
     );
   }
-  Widget buildPostItem(context) => Card(
+  Widget buildPostItem(context,UserModel? userModel) => Card(
     clipBehavior: Clip.antiAliasWithSaveLayer,
     elevation: 5,
     margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -52,18 +53,18 @@ class FeedsScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              const CircleAvatar(
+               CircleAvatar(
                 radius: 20,
-                backgroundImage: NetworkImage('https://img.freepik.com/free-photo/beautiful-ginger-woman-posts-photos-social-networks-after-awesome-day-has-active-rest-winter-holds-mobile-phone-wears-hat-coat-protective-ski-glasses-poses-yellow-wall_273609-32708.jpg'),
+                backgroundImage: NetworkImage('${userModel?.image}'),
               ),
               const SizedBox(width: 15,),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
+                     Row(
                       children:[
-                        Text('Abedeleilah',style: TextStyle(
+                        Text('${userModel?.name}',style: TextStyle(
                           height: 1.4,
                         ),),
                         SizedBox(width: 5,),
@@ -91,10 +92,10 @@ class FeedsScreen extends StatelessWidget {
             ),
           ),
           Text(
-            'datadatadatadatadatadatadatadatadatadatada'
-                'tadatadatadatadatadatadatadatadatadatadatadatadata'
-                'tadatadatadatadatadatadatadatadatadatadatadatadata'
-                'tadatadatadatadatadatadatadatadatadatadatadatadata',
+            'Its the fastest, easiest way we have found to speak directly to your customers—and solve all kinds of problems in your business.'
+             'For example: Nobody showing up for your sales appointments or webinars? Just send one text message to remind your leads to make an appearance.'
+              'Promos, ads or other campaigns just not working like they once did? Send a text to your best customers to remind them to check out your best offer.'
+         ' Emails not getting opened in your automated campaigns? Add one text message to that same campaign and see how your results improve.',
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           Padding(
@@ -183,7 +184,7 @@ class FeedsScreen extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 15,
-                        backgroundImage: NetworkImage('https://img.freepik.com/free-photo/beautiful-ginger-woman-posts-photos-social-networks-after-awesome-day-has-active-rest-winter-holds-mobile-phone-wears-hat-coat-protective-ski-glasses-poses-yellow-wall_273609-32708.jpg'),
+                        backgroundImage: NetworkImage('${userModel?.image}'),
                       ),
                       SizedBox(width: 15,),
                       Text('Write a comment ...',style: Theme.of(context).textTheme.bodySmall,),

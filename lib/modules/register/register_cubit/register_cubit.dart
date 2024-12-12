@@ -29,7 +29,6 @@ class RegisterCubit extends Cubit<RegisterStates>{
           phone: phone,
           userID: onValue.user!.uid
       );
-
     }).catchError((onError){
       emit(RegisterErrorState(onError.toString()));
     });
@@ -41,12 +40,15 @@ class RegisterCubit extends Cubit<RegisterStates>{
     required String email,
     required String phone,
     required String userID,
-}){
+  }){
     UserModel? model = UserModel(
       name: name,
       email: email,
       phone: phone,
       userID: userID,
+      image: 'https://img.freepik.com/free-photo/beautiful-ginger-woman-posts-photos-social-networks-after-awesome-day-has-active-rest-winter-holds-mobile-phone-wears-hat-coat-protective-ski-glasses-poses-yellow-wall_273609-32708.jpg',
+      cover: 'https://img.freepik.com/free-photo/beautiful-ginger-woman-posts-photos-social-networks-after-awesome-day-has-active-rest-winter-holds-mobile-phone-wears-hat-coat-protective-ski-glasses-poses-yellow-wall_273609-32708.jpg',
+      bio: 'Write your bio ...',
       isEmailVerified: false,
     );
     FirebaseFirestore.instance
@@ -61,7 +63,7 @@ class RegisterCubit extends Cubit<RegisterStates>{
               .catchError((onError){
                 emit(RegisterErrorState(onError.toString()));
           });
-            emit(RegisterCreateUserSuccessState(model));
+            // emit(RegisterCreateUserSuccessState(model));
     }).catchError((onError){
       emit(RegisterCreateUserErrorState(onError.toString()));
     });

@@ -6,6 +6,7 @@ import 'package:socialapp/layouts/social_layout/social_cubit/social_states.dart'
 import 'package:socialapp/models/user_model/user_model.dart';
 import 'package:socialapp/modules/chats/chats_screen.dart';
 import 'package:socialapp/modules/feeds/feeds_screen.dart';
+import 'package:socialapp/modules/new_post/new_post_screen.dart';
 import 'package:socialapp/modules/search/search_screen.dart';
 import 'package:socialapp/modules/settings/settings_screen.dart';
 import 'package:socialapp/modules/users/users_screen.dart';
@@ -22,19 +23,6 @@ class SocialCubit extends Cubit<SocialStates>{
     return isVerified = FirebaseAuth.instance.currentUser!.emailVerified;
   }
 
-  UserModel? model;
-  void getUserData()async{
-    emit(SocialGetUserDataLoadingState());
-    await CacheHelper.getUserDataNew()
-        .then((onValue){
-          model = onValue;
-          print('SocialCubit 19 model from shared::: $model');
-          emit(SocialGetUserDataSuccessState(onValue));
-    })
-        .catchError((onError){
-          emit(SocialGetUserDataErrorState(onError.toString()));
-    });
-  }
 
   //Change App Theme Mode
   bool isDarkCubit = false;
@@ -61,12 +49,14 @@ int currentIndex = 0;
   List<Widget> screens = [
     FeedsScreen(),
     ChatsScreen(),
+    NewPostScreen(),
     UsersScreen(),
     SettingsScreen(),
   ];
   List<String> titles= [
     'Feeds',
     'Chats',
+    'New Post',
     'Users',
     'Settings',
   ];

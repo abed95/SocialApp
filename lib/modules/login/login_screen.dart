@@ -24,8 +24,12 @@ class LoginScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit,LoginStates>(
         listener: (context,state){
           if(state is LoginGetUserDataSuccessState){
-            showToast(message: 'Login Success ${state.userModel?.name}', state: ToastStates.SUCCESS);
-            navigateAndFinish(context, SocialLayout());
+            CacheHelper.getUserDataNew().then((onValue){
+              showToast(message: 'Login Success ${state.userModel?.name}', state: ToastStates.SUCCESS);
+              navigateAndFinish(context, SocialLayout());
+            }).catchError((onError){
+              showToast(message: 'Login Get User data error Login Screen', state: ToastStates.ERROR);
+            });
           }else if(state is LoginErrorState){
             showToast(message: state.error, state: ToastStates.ERROR);
           }
