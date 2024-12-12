@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:readmore/readmore.dart';
 import 'package:socialapp/models/user_model/user_model.dart';
 import 'package:socialapp/shared/network/local/cache_helper.dart';
 import 'package:socialapp/shared/styles/colors.dart';
@@ -20,7 +22,7 @@ class FeedsScreen extends StatelessWidget {
             child: Stack(
               alignment: AlignmentDirectional.bottomEnd,
               children:[
-                 Image(image: NetworkImage('${userModel?.cover}'),
+                 Image(image: CachedNetworkImageProvider('${userModel?.cover}'),
                 fit: BoxFit.cover,
                 height: 200,
                 width: double.infinity,
@@ -56,7 +58,7 @@ class FeedsScreen extends StatelessWidget {
             children: [
                CircleAvatar(
                 radius: 20,
-                backgroundImage: NetworkImage('${userModel?.image}'),
+                backgroundImage: CachedNetworkImageProvider('${userModel?.image}'),
               ),
               const SizedBox(width: 15,),
               Expanded(
@@ -92,13 +94,15 @@ class FeedsScreen extends StatelessWidget {
               color: Colors.grey[300],
             ),
           ),
-          Text(
-            'Its the fastest, easiest way we have found to speak directly to your customers—and solve all kinds of problems in your business.'
-             'For example: Nobody showing up for your sales appointments or webinars? Just send one text message to remind your leads to make an appearance.'
-              'Promos, ads or other campaigns just not working like they once did? Send a text to your best customers to remind them to check out your best offer.'
-         ' Emails not getting opened in your automated campaigns? Add one text message to that same campaign and see how your results improve.',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+          ReadMoreText(
+      'Flutter is Google’s mobile UI open source framework to build high-quality native (super fast) interfaces for iOS and Android apps with the unified codebase.',
+      trimMode: TrimMode.Line,
+      trimLines: 2,
+      colorClickableText: Colors.pink,
+      trimCollapsedText: 'Show more',
+      trimExpandedText: 'Show less',
+      moreStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.bold,color: defaultColor),
+    ),
           Padding(
             padding: const EdgeInsets.only(bottom: 10.0,top: 5,),
             child: Container(
@@ -126,7 +130,7 @@ class FeedsScreen extends StatelessWidget {
             height: 140,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4,),
-              image: const DecorationImage(image: NetworkImage('https://img.freepik.com/free-photo/horizontal-shot-pretty-smiling-girl-skier-calls-relatives-vis-smartphone-tells-about-her-winter-vacation-wears-snowboarding-goggles_273609-32709.jpg',),
+              image: DecorationImage(image: CachedNetworkImageProvider('https://img.freepik.com/free-photo/horizontal-shot-pretty-smiling-girl-skier-calls-relatives-vis-smartphone-tells-about-her-winter-vacation-wears-snowboarding-goggles_273609-32709.jpg',),
                 fit: BoxFit.cover,),
             ),
           ),
@@ -185,7 +189,7 @@ class FeedsScreen extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 15,
-                        backgroundImage: NetworkImage('${userModel?.image}'),
+                        backgroundImage: CachedNetworkImageProvider('${userModel?.image}'),
                       ),
                       SizedBox(width: 15,),
                       Text('Write a comment ...',style: Theme.of(context).textTheme.bodySmall,),

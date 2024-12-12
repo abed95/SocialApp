@@ -1,12 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialapp/layouts/social_layout/social_cubit/social_cubit.dart';
-import 'package:socialapp/layouts/social_layout/social_cubit/social_states.dart';
 import 'package:socialapp/modules/settings/settings_cubit/settings_cubit.dart';
 import 'package:socialapp/modules/settings/settings_cubit/settings_states.dart';
-import 'package:socialapp/shared/components/components.dart';
-import 'package:socialapp/shared/components/constants.dart';
 import 'package:socialapp/shared/network/local/cache_helper.dart';
+import 'package:socialapp/shared/styles/colors.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -37,7 +35,7 @@ class SettingsScreen extends StatelessWidget {
                                 topLeft: Radius.circular(4.0),
                                 topRight: Radius.circular(4.0)),
                             image: DecorationImage(
-                              image: NetworkImage('${userModel?.cover}'),
+                              image: CachedNetworkImageProvider('${userModel?.cover}'),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -50,7 +48,7 @@ class SettingsScreen extends StatelessWidget {
                             Theme.of(context).scaffoldBackgroundColor,
                         child: CircleAvatar(
                           radius: 60,
-                          backgroundImage: NetworkImage('${userModel?.image}'),
+                          backgroundImage: CachedNetworkImageProvider('${userModel?.image}'),
                         ),
                       )
                     ],
@@ -67,8 +65,9 @@ class SettingsScreen extends StatelessWidget {
                   '${userModel?.bio}',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
+                SizedBox(height: 15,),
                 Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Row(
                     children: [
                       Expanded(
@@ -143,15 +142,31 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 20,
                 ),
                 Row(
                   children: [
                     Expanded(
-                      child: OutlinedButton(onPressed: (){}, child: Text('Add Photos',),),
+                      child: OutlinedButton(
+                        onPressed: () {},
+                        child: Text(
+                          'Add Photos',
+                          style: TextStyle(color: defaultColor),
+                        ),
+
+                      ),
                     ),
-                    SizedBox(width: 10,),
-                    OutlinedButton(onPressed: (){}, child: Icon(Icons.edit,size: 10,),),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    OutlinedButton(
+                      onPressed: () {},
+                      child: Icon(
+                        Icons.edit,
+                        size: 14,
+                        color: defaultColor,
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -160,7 +175,10 @@ class SettingsScreen extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: OutlinedButton(onPressed: (){}, child: Text('SignOut'),),
+                      child: OutlinedButton(
+                        onPressed: () {},
+                        child: Text('SignOut', style: TextStyle(color: defaultColor),),
+                      ),
                     ),
                   ],
                 ),
