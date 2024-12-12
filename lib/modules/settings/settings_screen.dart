@@ -13,9 +13,9 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SettingsCubit,SettingsStates>(
-      listener: (context,state){},
-      builder: (context,state){
+    return BlocConsumer<SettingsCubit, SettingsStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
         var userModel = CacheHelper.userModel;
         print('user Data Setting Screen:::19 ${userModel.toString()}');
         return SingleChildScrollView(
@@ -37,9 +37,7 @@ class SettingsScreen extends StatelessWidget {
                                 topLeft: Radius.circular(4.0),
                                 topRight: Radius.circular(4.0)),
                             image: DecorationImage(
-                              image: NetworkImage(
-                                '${userModel?.cover}'
-                              ),
+                              image: NetworkImage('${userModel?.cover}'),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -48,7 +46,8 @@ class SettingsScreen extends StatelessWidget {
                       ),
                       CircleAvatar(
                         radius: 64,
-                        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                        backgroundColor:
+                            Theme.of(context).scaffoldBackgroundColor,
                         child: CircleAvatar(
                           radius: 60,
                           backgroundImage: NetworkImage('${userModel?.image}'),
@@ -57,11 +56,17 @@ class SettingsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 5,),
-                Text('${userModel?.name}',
-                  style: Theme.of(context).textTheme.bodyMedium,),
-                Text('${userModel?.bio}',
-                  style: Theme.of(context).textTheme.bodySmall,),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  '${userModel?.name}',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                Text(
+                  '${userModel?.bio}',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Row(
@@ -70,70 +75,93 @@ class SettingsScreen extends StatelessWidget {
                         child: InkWell(
                           child: Column(
                             children: [
-                              Text('100',
-                                style: Theme.of(context).textTheme.bodyMedium,),
-                              Text('post',
-                                style: Theme.of(context).textTheme.bodySmall,),
+                              Text(
+                                '123',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              Text(
+                                'Posts',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
                             ],
                           ),
-                          onTap: (){},
+                          onTap: () {},
                         ),
                       ),
                       Expanded(
                         child: InkWell(
                           child: Column(
                             children: [
-                              Text('100',
-                                style: Theme.of(context).textTheme.bodyMedium,),
-                              Text('post',
-                                style: Theme.of(context).textTheme.bodySmall,),
+                              Text(
+                                '324',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              Text(
+                                'Photos',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
                             ],
                           ),
-                          onTap: (){},
+                          onTap: () {},
                         ),
                       ),
                       Expanded(
                         child: InkWell(
                           child: Column(
                             children: [
-                              Text('100',
-                                style: Theme.of(context).textTheme.bodyMedium,),
-                              Text('post',
-                                style: Theme.of(context).textTheme.bodySmall,),
+                              Text(
+                                '1.3m',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              Text(
+                                'Followers',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
                             ],
                           ),
-                          onTap: (){},
+                          onTap: () {},
                         ),
                       ),
                       Expanded(
                         child: InkWell(
                           child: Column(
                             children: [
-                              Text('100',
-                                style: Theme.of(context).textTheme.bodyMedium,),
-                              Text('post',
-                                style: Theme.of(context).textTheme.bodySmall,),
+                              Text(
+                                '10',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              Text(
+                                'Following',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
                             ],
                           ),
-                          onTap: (){},
+                          onTap: () {},
                         ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 50,),
+                SizedBox(
+                  height: 50,
+                ),
                 Row(
                   children: [
-                    Expanded(child: defaultButton(function: (){}, text: 'Edit Profile',),),
-          
+                    Expanded(
+                      child: OutlinedButton(onPressed: (){}, child: Text('Add Photos',),),
+                    ),
+                    SizedBox(width: 10,),
+                    OutlinedButton(onPressed: (){}, child: Icon(Icons.edit,size: 10,),),
                   ],
                 ),
-                SizedBox(height: 50,),
+                SizedBox(
+                  height: 20,
+                ),
                 Row(
                   children: [
-                    Expanded(child: defaultButton(function: (){
-                      signOut(context);
-                    }, text: 'Logout',),),
+                    Expanded(
+                      child: OutlinedButton(onPressed: (){}, child: Text('SignOut'),),
+                    ),
                   ],
                 ),
               ],

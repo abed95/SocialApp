@@ -1,8 +1,9 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:socialapp/models/user_model/user_model.dart';
-import 'package:socialapp/shared/components/components.dart';
 import 'package:socialapp/shared/network/local/cache_helper.dart';
 import 'package:socialapp/shared/styles/colors.dart';
+
 
 class FeedsScreen extends StatelessWidget {
   @override
