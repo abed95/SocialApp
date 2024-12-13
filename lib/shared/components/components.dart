@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:socialapp/shared/styles/colors.dart';
 
-
-
 //Navigate and kill the previous widget
 void navigateAndFinish(context, widget) => Navigator.pushAndRemoveUntil(
       context,
@@ -18,22 +16,25 @@ void navigateTo(context, widget) => Navigator.push(
       builder: (context) => widget,
     ));
 
-Widget titleText ({required String title,context}) => Text(
+Widget titleText({required String title, context}) => Text(
       title,
       style: Theme.of(context).textTheme.titleLarge,
     );
 
-Widget bodyText ({required String body, context})=>
-    Text(body,style: Theme.of(context).textTheme.bodyMedium,);
+Widget bodyText({required String body, context}) => Text(
+      body,
+      style: Theme.of(context).textTheme.bodyMedium,
+    );
 
-Widget buttonText ({required String text,function,context})=> TextButton(onPressed: function,
-        child: Text(
-            text.toUpperCase(),
-          style: TextStyle(
-            fontSize: 14,
-            color: defaultColor,
-          ),
+Widget buttonText({required String text, function, context}) => TextButton(
+      onPressed: function,
+      child: Text(
+        text.toUpperCase(),
+        style: TextStyle(
+          fontSize: 14,
+          color: defaultColor,
         ),
+      ),
     );
 
 Widget defaultButton({
@@ -41,7 +42,8 @@ Widget defaultButton({
   double radius = 3,
   required VoidCallback function,
   required String text,
-}) => Container(
+}) =>
+    Container(
       width: width,
       height: 45,
       decoration: BoxDecoration(
@@ -72,7 +74,8 @@ Widget editTextForm({
   final GestureTapCallback? onTap,
   required FormFieldValidator<String>? validator,
   bool isClickable = true,
-}) => TextFormField(
+}) =>
+    TextFormField(
       controller: controller,
       keyboardType: keyboardType,
       obscureText: isPassword,
@@ -96,22 +99,22 @@ Widget editTextForm({
 void showToast({
   required String? message,
   required ToastStates state,
-})=> Fluttertoast.showToast(
-    msg: message,
-    toastLength: Toast.LENGTH_LONG,
-    gravity: ToastGravity.BOTTOM,
-    timeInSecForIosWeb: 5,
-    backgroundColor: chooseToastColor(state),
-    textColor: Colors.white,
-    fontSize: 16.0
-);
+}) =>
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 5,
+        backgroundColor: chooseToastColor(state),
+        textColor: Colors.white,
+        fontSize: 16.0);
 
 //enum
-enum ToastStates{SUCCESS,ERROR,WARNING}
+enum ToastStates { SUCCESS, ERROR, WARNING }
 
-Color chooseToastColor(ToastStates state){
+Color chooseToastColor(ToastStates state) {
   Color color;
-  switch(state){
+  switch (state) {
     case ToastStates.SUCCESS:
       color = Colors.green;
       break;
@@ -126,13 +129,33 @@ Color chooseToastColor(ToastStates state){
 }
 
 Widget myDivider() => Padding(
-  padding: const EdgeInsets.symmetric(
-    vertical: 20.0,
-    horizontal: 20,
-  ),
-  child: Container(
-    width: double.infinity,
-    height: 1,
-    color: Colors.grey[300],
-  ),
-);
+      padding: const EdgeInsets.symmetric(
+        vertical: 20.0,
+        horizontal: 20,
+      ),
+      child: Container(
+        width: double.infinity,
+        height: 1,
+        color: Colors.grey[300],
+      ),
+    );
+
+PreferredSizeWidget defaultAppBar({
+  required BuildContext context,
+  String? title,
+  List<Widget>? actions,
+}) =>
+    AppBar(
+      leading: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: Icon(
+          Icons.arrow_back_ios,
+          color: defaultColor,
+        ),
+      ),
+      title: Text(title ?? '',style:const TextStyle(color: defaultColor),),
+      actions: actions,
+
+    );

@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialapp/edit_profile/edit_profile_screen.dart';
 import 'package:socialapp/modules/settings/settings_cubit/settings_cubit.dart';
 import 'package:socialapp/modules/settings/settings_cubit/settings_states.dart';
+import 'package:socialapp/shared/components/components.dart';
+import 'package:socialapp/shared/components/constants.dart';
 import 'package:socialapp/shared/network/local/cache_helper.dart';
 import 'package:socialapp/shared/styles/colors.dart';
 
@@ -160,7 +163,9 @@ class SettingsScreen extends StatelessWidget {
                       width: 10,
                     ),
                     OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        navigateTo(context, EditProfileScreen());
+                      },
                       child: Icon(
                         Icons.edit,
                         size: 14,
@@ -176,7 +181,9 @@ class SettingsScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          signOut(context);
+                        },
                         child: Text('SignOut', style: TextStyle(color: defaultColor),),
                       ),
                     ),

@@ -9,6 +9,8 @@ ThemeData lightTheme = ThemeData(
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.white,
     elevation: 0,
+    titleSpacing: 5,
+    toolbarTextStyle: TextStyle(color: defaultColor),
     systemOverlayStyle: SystemUiOverlayStyle(
       statusBarColor: Colors.white,
       statusBarIconBrightness: Brightness.dark,
@@ -79,7 +81,8 @@ ThemeData darkTheme = ThemeData(
   primarySwatch: defaultColor,
   scaffoldBackgroundColor: HexColor('333739'),
   appBarTheme: AppBarTheme(
-    titleSpacing: 20,
+    titleSpacing: 5,
+    toolbarTextStyle: TextStyle(color: defaultColor),
     systemOverlayStyle: SystemUiOverlayStyle(
       statusBarColor: HexColor('333739'),
       statusBarIconBrightness: Brightness.light,

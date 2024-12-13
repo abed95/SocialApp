@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:socialapp/shared/components/components.dart';
 
 class NewPostScreen extends StatelessWidget {
   const NewPostScreen({super.key});
@@ -7,10 +8,10 @@ class NewPostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Post'),
+      appBar:defaultAppBar(
+          context: context,
+          title: 'New Post',
       ),
-
     );
   }
 }

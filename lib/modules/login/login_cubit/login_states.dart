@@ -1,7 +1,4 @@
-
 import 'package:socialapp/models/user_model/user_model.dart';
-
-import '../../../models/user_model/user_model.dart';
 
 abstract class LoginStates {}
 
