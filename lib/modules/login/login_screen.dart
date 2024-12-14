@@ -37,55 +37,68 @@ class LoginScreen extends StatelessWidget {
         builder: (context,state){
           return Scaffold(
             appBar: AppBar(),
-            body: GestureDetector(
-              onTap: (){
-                FocusScope.of(context).unfocus();
-              },
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          titleText(title: 'LOGIN', context: context),
-                          bodyText(
-                              body: 'Login now to contact with your friends now!',
-                              context: context),
-                          const SizedBox(
-                            height: 45,
-                          ),
-                          editTextForm(
-                            controller: emailController,
-                            label: 'Email',
-                            prefixIcon: Icons.email_outlined,
-                            validator: (String? value) {
-                              if (value!.isEmpty) {
-                                return 'You must enter an email';
-                              }
-                            },
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          editTextForm(
-                            controller: passwordController,
-                            label: 'Password',
-                            isPassword: LoginCubit.get(context).isPassword,
-                            prefixIcon: Icons.lock,
-                            suffix: LoginCubit.get(context).suffix,
-                            suffixIconPressed: () {
-                              LoginCubit.get(context).changePasswordVisibility();
-                            },
-                            validator: (String? value){
-                              if (value!.isEmpty) {
-                                return 'You must enter password';
-                              }
-                            },
-                            onSubmit: (value){
+            body: Center(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        titleText(title: 'LOGIN', context: context),
+                        bodyText(
+                            body: 'Login now to contact with your friends now!',
+                            context: context),
+                        const SizedBox(
+                          height: 45,
+                        ),
+                        editTextForm(
+                          controller: emailController,
+                          label: 'Email',
+                          prefixIcon: Icons.email_outlined,
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return 'You must enter an email';
+                            }
+                          },
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        editTextForm(
+                          controller: passwordController,
+                          label: 'Password',
+                          isPassword: LoginCubit.get(context).isPassword,
+                          prefixIcon: Icons.lock,
+                          suffix: LoginCubit.get(context).suffix,
+                          suffixIconPressed: () {
+                            LoginCubit.get(context).changePasswordVisibility();
+                          },
+                          validator: (String? value){
+                            if (value!.isEmpty) {
+                              return 'You must enter password';
+                            }
+                          },
+                          onSubmit: (value){
+                            if(formKey.currentState!.validate()){
+                              LoginCubit.get(context).userLogin(
+                                email: emailController.text,
+                                password: passwordController.text,
+                              );
+                            }
+                          },
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        ConditionalBuilder(
+                          condition: state is! LoginLoadingState,
+                          builder: (context)=>defaultButton(
+                            function: () {
+                              print('inside Button');
+                              FocusScope.of(context).unfocus();
                               if(formKey.currentState!.validate()){
                                 LoginCubit.get(context).userLogin(
                                   email: emailController.text,
@@ -93,38 +106,20 @@ class LoginScreen extends StatelessWidget {
                                 );
                               }
                             },
+                            text: 'login',
                           ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          ConditionalBuilder(
-                            condition: state is! LoginLoadingState,
-                            builder: (context)=>defaultButton(
-                              function: () {
-                                print('inside Button');
-                                FocusScope.of(context).unfocus();
-                                if(formKey.currentState!.validate()){
-                                  LoginCubit.get(context).userLogin(
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                  );
-                                }
-                              },
-                              text: 'login',
-                            ),
-                            fallback: (context)=>const Center(child: CircularProgressIndicator(color: defaultColor,),),
-                          ),
-                          Row(
-                            children: [
-                              bodyText(body: 'Don\'t have an account?', context: context),
-                              buttonText(text: 'register now', context: context,function: (){
-                                print('register button taped');
-                                navigateTo(context, RegisterScreen());
-                              }),
-                            ],
-                          ),
-                        ],
-                      ),
+                          fallback: (context)=>const Center(child: CircularProgressIndicator(color: defaultColor,),),
+                        ),
+                        Row(
+                          children: [
+                            bodyText(body: 'Don\'t have an account?', context: context),
+                            buttonText(text: 'register now', context: context,function: (){
+                              print('register button taped');
+                              navigateTo(context, RegisterScreen());
+                            }),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),

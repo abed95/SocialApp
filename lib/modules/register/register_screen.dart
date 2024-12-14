@@ -42,81 +42,97 @@ class RegisterScreen extends StatelessWidget {
           print("RegisterScreen BlocProvider BlocConsumer ${state.toString()}");
           return Scaffold(
             appBar: AppBar(),
-            body: GestureDetector(
-              onTap: (){
-                FocusScope.of(context).unfocus();
-              },
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          titleText(title: 'Register', context: context),
-                          bodyText(
-                              body: 'Register now to browse an amazing offers',
-                              context: context),
-                          const SizedBox(
-                            height: 45,
-                          ),
-                          editTextForm(
-                            controller: nameController,
-                            label: 'User Name',
-                            prefixIcon: Icons.person,
-                            validator: (String? value) {
-                              if (value!.isEmpty) {
-                                return 'You must enter your name';
-                              }
-                            },
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          editTextForm(
-                            controller: emailController,
-                            label: 'Email',
-                            prefixIcon: Icons.email_outlined,
-                            validator: (String? value) {
-                              if (value!.isEmpty) {
-                                return 'You must enter an email';
-                              }
-                            },
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          editTextForm(
-                            controller: passwordController,
-                            label: 'Password',
-                            isPassword: RegisterCubit.get(context).isPassword,
-                            prefixIcon: Icons.lock,
-                            suffix: RegisterCubit.get(context).suffix,
-                            suffixIconPressed: () {
-                              RegisterCubit.get(context).changePasswordVisibility();
-                            },
-                            validator: (String? value){
-                              if (value!.isEmpty) {
-                                return 'You must enter password';
-                              }
-                            },
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          editTextForm(
-                            controller: phoneController,
-                            label: 'Phone number',
-                            prefixIcon: Icons.phone,
-                            validator: (String? value){
-                              if (value!.isEmpty) {
-                                return 'You must enter phone number';
-                              }
-                            },
-                            onSubmit: (value){
+            body: Center(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        titleText(title: 'Register', context: context),
+                        bodyText(
+                            body: 'Register now to browse an amazing offers',
+                            context: context),
+                        const SizedBox(
+                          height: 45,
+                        ),
+                        editTextForm(
+                          controller: nameController,
+                          label: 'User Name',
+                          prefixIcon: Icons.person,
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return 'You must enter your name';
+                            }
+                          },
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        editTextForm(
+                          controller: emailController,
+                          label: 'Email',
+                          prefixIcon: Icons.email_outlined,
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return 'You must enter an email';
+                            }
+                          },
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        editTextForm(
+                          controller: passwordController,
+                          label: 'Password',
+                          isPassword: RegisterCubit.get(context).isPassword,
+                          prefixIcon: Icons.lock,
+                          suffix: RegisterCubit.get(context).suffix,
+                          suffixIconPressed: () {
+                            RegisterCubit.get(context).changePasswordVisibility();
+                          },
+                          validator: (String? value){
+                            if (value!.isEmpty) {
+                              return 'You must enter password';
+                            }
+                          },
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        editTextForm(
+                          controller: phoneController,
+                          label: 'Phone number',
+                          prefixIcon: Icons.phone,
+                          validator: (String? value){
+                            if (value!.isEmpty) {
+                              return 'You must enter phone number';
+                            }
+                          },
+                          onSubmit: (value){
+                            if(formKey.currentState!.validate()){
+                              RegisterCubit.get(context).userRegister(
+                                name: nameController.text,
+                                email: emailController.text,
+                                password: passwordController.text,
+                                phone: phoneController.text,
+                              );
+                            }
+                          },
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+
+                        ConditionalBuilder(
+                          condition: state is! RegisterLoadingState,
+                          builder: (context)=>defaultButton(
+                            function: () {
+                              print('inside Button');
+                              FocusScope.of(context).unfocus();
                               if(formKey.currentState!.validate()){
                                 RegisterCubit.get(context).userRegister(
                                   name: nameController.text,
@@ -125,39 +141,18 @@ class RegisterScreen extends StatelessWidget {
                                   phone: phoneController.text,
                                 );
                               }
+
                             },
+                            text: 'register',
                           ),
-                          const SizedBox(
-                            height: 20,
+                          fallback: (context)=>const Center(
+                            child: CircularProgressIndicator(
+                              color: defaultColor,
+                            ),
                           ),
+                        )
 
-                          ConditionalBuilder(
-                            condition: state is! RegisterLoadingState,
-                            builder: (context)=>defaultButton(
-                              function: () {
-                                print('inside Button');
-                                FocusScope.of(context).unfocus();
-                                if(formKey.currentState!.validate()){
-                                  RegisterCubit.get(context).userRegister(
-                                    name: nameController.text,
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                    phone: phoneController.text,
-                                  );
-                                }
-
-                              },
-                              text: 'register',
-                            ),
-                            fallback: (context)=>const Center(
-                              child: CircularProgressIndicator(
-                                color: defaultColor,
-                              ),
-                            ),
-                          )
-
-                        ],
-                      ),
+                      ],
                     ),
                   ),
                 ),

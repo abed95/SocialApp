@@ -23,24 +23,8 @@ class LoginCubit extends Cubit<LoginStates>{
         password: password,
     ).then((onValue){
       // Fetch user data from FireStore
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(onValue.user!.uid)
-          .get()
-          .then((documentSnapshot) async {
-        if (documentSnapshot.exists) {
-          // Convert FireStore document to UserModel
-          userModel = UserModel.fromJson(documentSnapshot.data()!);
-          // Save UserModel to SharedPreferences
-          await CacheHelper.saveUserData(userModel);
-          // Emit success state with userModel
-          emit(LoginGetUserDataSuccessState(userModel));
-        } else {
-          emit(LoginGetUserDataErrorState(" LoginCubit 39:User data not found in Firestore."));
-        }
-      }).catchError((onError) {
-        emit(LoginGetUserDataErrorState("Error fetching user data: ${onError.toString()}"));
-      }); // Save UserModel to SharedPreferences
+
+      getAndSaveUserData(onValue.user?.uid);
     }).catchError((onError){
       emit(LoginErrorState(onError.toString()));
     });
@@ -53,6 +37,27 @@ class LoginCubit extends Cubit<LoginStates>{
     isPassword = !isPassword;
     suffix = isPassword? Icons.remove_red_eye : Icons.remove_red_eye_outlined;
     emit(LoginChangePasswordVisibilityState());
+  }
+
+  Future<void> getAndSaveUserData(String? userId)async {
+   await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .get()
+        .then((documentSnapshot) async {
+      if (documentSnapshot.exists) {
+        // Convert FireStore document to UserModel
+        userModel = UserModel.fromJson(documentSnapshot.data()!);
+        // Save UserModel to SharedPreferences
+        await CacheHelper.saveUserData(userModel);
+        // Emit success state with userModel
+        emit(LoginGetUserDataSuccessState(userModel));
+      } else {
+        emit(LoginGetUserDataErrorState(" LoginCubit 56:User data not found in Firestore."));
+      }
+    }).catchError((onError) {
+      emit(LoginGetUserDataErrorState("Error fetching user data: ${onError.toString()}"));
+    });
   }
 
 }

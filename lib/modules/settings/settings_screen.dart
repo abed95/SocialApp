@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialapp/edit_profile/edit_profile_screen.dart';
+import 'package:socialapp/modules/edit_profile/edit_profile_screen.dart';
 import 'package:socialapp/modules/settings/settings_cubit/settings_cubit.dart';
 import 'package:socialapp/modules/settings/settings_cubit/settings_states.dart';
 import 'package:socialapp/shared/components/components.dart';

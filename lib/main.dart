@@ -31,14 +31,19 @@ class MyApp extends StatelessWidget {
       child: BlocConsumer<SocialCubit,SocialStates>(
           listener: (context,state){},
         builder: (context,state){
-            return  MaterialApp(
-              debugShowCheckedModeBanner: false,
-              theme: lightTheme,
-              darkTheme: darkTheme,
-              themeMode: SocialCubit.get(context).isDarkCubit
-                  ? ThemeMode.dark
-                  : ThemeMode.light,
-              home: SplashScreen(),
+            return  GestureDetector(
+              onTap: (){
+                FocusScope.of(context).unfocus();
+              },
+              child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: lightTheme,
+                darkTheme: darkTheme,
+                themeMode: SocialCubit.get(context).isDarkCubit
+                    ? ThemeMode.dark
+                    : ThemeMode.light,
+                home: SplashScreen(),
+              ),
             );
         },
       ),
