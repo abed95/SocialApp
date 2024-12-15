@@ -26,17 +26,17 @@ class ChatsCubit extends Cubit<ChatsStates> {
     }
   }
 
+  // Send Messages
   void sendMessage({
-    String? receiverID,
-    String? dateTime,
-    String? text,
+    required String? receiverID,
+    required String? dateTime,
+    required String? text,
   }) {
     MessageModel? model = MessageModel(
       senderID: userModel?.userID,
       receiverID: receiverID,
       text: text,
     );
-
     //set Sender chat message
     FirebaseFirestore.instance
         .collection('users')
@@ -50,7 +50,6 @@ class ChatsCubit extends Cubit<ChatsStates> {
     }).catchError((onError) {
       emit(ChatsSendMessageErrorState(onError.toString()));
     });
-
     //set Receiver chat message
     FirebaseFirestore.instance
         .collection('users')
@@ -63,6 +62,26 @@ class ChatsCubit extends Cubit<ChatsStates> {
       emit(ChatsSendMessageSuccessState());
     }).catchError((onError) {
       emit(ChatsSendMessageErrorState(onError.toString()));
+    });
+  }
+
+  //Get messages
+  List<MessageModel?> messages = [];
+  void getMessages(String? receiverID) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userModel?.userID)
+        .collection('chats')
+        .doc(receiverID)
+        .collection('messages')
+        .orderBy('dateTime')
+        .snapshots()
+        .listen((onData) {
+      messages = [];
+      onData.docs.forEach((element) {
+        messages.add(MessageModel.fromJson(element.data()));
+      });
+      emit(ChatsGetMessageSuccessState());
     });
   }
 }
