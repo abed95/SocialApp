@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialapp/layouts/social_layout/social_layout.dart';
 import 'package:socialapp/modules/edit_profile/edit_profile_cubit/edit_profile_cubit.dart';
 import 'package:socialapp/modules/edit_profile/edit_profile_cubit/edit_profile_states.dart';
+import 'package:socialapp/modules/settings/settings_screen.dart';
 import 'package:socialapp/shared/components/components.dart';
 import 'package:socialapp/shared/network/local/cache_helper.dart';
 import 'package:socialapp/shared/styles/colors.dart';
@@ -20,14 +22,16 @@ class EditProfileScreen extends StatelessWidget {
       child: BlocConsumer<EditProfileCubit, EditProfileStates>(
         listener: (context, state) {
           if (state is EditProfileUpdateUserSuccessStates) {
-            Navigator.pop(context);
+            navigateAndFinish(context, SocialLayout());
           }
         },
         builder: (context, state) {
+
           var userModel = CacheHelper.userModel;
           var cubit = EditProfileCubit.get(context);
           var profileImage = cubit.profileImage;
           var coverImage = cubit.coverImage;
+
           if (userModel != null) {
             nameController.text = userModel.name!;
             bioController.text = userModel.bio!;
@@ -38,17 +42,14 @@ class EditProfileScreen extends StatelessWidget {
               name: userModel.name!,
               bio: userModel.bio!,
               phone: userModel.phone!,
+              profileImage: cubit.profileImage,
+              coverImage: cubit.coverImage,
             );
+
+
           }
 
           // Add listeners to track changes in the text fields
-          cubit.setOriginalValues(
-            name: userModel!.name!,
-            bio: userModel.bio!,
-            phone: userModel.phone!,
-            profileImage: cubit.profileImage,
-            coverImage: cubit.coverImage,
-          );
 
           return Scaffold(
             appBar: defaultAppBar(
@@ -58,13 +59,12 @@ class EditProfileScreen extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     cubit.hasChanges
-                        ? () {
+                        ?
                             cubit.updateUser(
                               name: nameController.text,
                               bio: bioController.text,
                               phone: phoneController.text,
-                            );
-                          }
+                            )
                         : null; //Disable button if no changes
                   },
                   child: Text(
@@ -84,6 +84,9 @@ class EditProfileScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
+                    if(state is EditProfileUpdateUserLoadingStates)
+                    LinearProgressIndicator(color: defaultColor,),
+                    SizedBox(height: 5,),
                     Container(
                       height: 200,
                       child: Stack(
@@ -105,7 +108,7 @@ class EditProfileScreen extends StatelessWidget {
                                     image: DecorationImage(
                                       image: coverImage == null
                                           ? CachedNetworkImageProvider(
-                                              '${userModel.cover}')
+                                              '${userModel?.cover}')
                                           : FileImage(coverImage),
                                       fit: BoxFit.cover,
                                     ),
@@ -116,14 +119,19 @@ class EditProfileScreen extends StatelessWidget {
                                     EditProfileCubit.get(context)
                                         .getCoverImage();
                                   },
-                                  icon: const CircleAvatar(
+                                  icon: CircleAvatar(
                                     backgroundColor: Colors.white,
                                     radius: 15,
-                                    child: Icon(
-                                      Icons.camera_alt_outlined,
-                                      size: 20,
-                                      color: defaultColor,
-                                    ),
+                                    child: state
+                                            is EditProfileUploadImageProfileLoadingStates
+                                        ? CircularProgressIndicator(
+                                            color: defaultColor,
+                                          )
+                                        : Icon(
+                                            Icons.camera_alt_outlined,
+                                            size: 20,
+                                            color: defaultColor,
+                                          ),
                                   ),
                                 ),
                               ],
@@ -149,14 +157,20 @@ class EditProfileScreen extends StatelessWidget {
                                   EditProfileCubit.get(context)
                                       .getProfileImage();
                                 },
-                                icon: const CircleAvatar(
+                                icon: CircleAvatar(
                                     backgroundColor: Colors.white,
                                     radius: 15,
-                                    child: Icon(
+                                    child: state
+                                    is EditProfileUploadCoverLoadingStates
+                                        ? CircularProgressIndicator(
+                                      color: defaultColor,
+                                    )
+                                        : Icon(
                                       Icons.camera_alt_outlined,
                                       size: 20,
                                       color: defaultColor,
-                                    )),
+                                    ),
+                                ),
                               ),
                             ],
                           ),
@@ -219,12 +233,12 @@ class EditProfileScreen extends StatelessWidget {
                         return null;
                       },
                       onChange: (value) => cubit.checkForChanges(
-                name: nameController.text,
-                bio: bioController.text,
-                phone: phoneController.text,
-                profileImage: cubit.profileImage,
-                coverImage: cubit.coverImage,
-              ),
+                        name: nameController.text,
+                        bio: bioController.text,
+                        phone: phoneController.text,
+                        profileImage: cubit.profileImage,
+                        coverImage: cubit.coverImage,
+                      ),
                     ),
                   ],
                 ),

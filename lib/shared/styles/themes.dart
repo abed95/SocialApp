@@ -16,7 +16,7 @@ ThemeData lightTheme = ThemeData(
       statusBarIconBrightness: Brightness.dark,
     ),
     titleTextStyle: TextStyle(
-      color: Colors.black,
+      color:defaultColor,
       fontSize: 20,
       fontWeight: FontWeight.bold,
     ),
@@ -51,6 +51,12 @@ ThemeData lightTheme = ThemeData(
           fontSize: 8,
           color: Colors.grey
       ),
+    titleMedium: TextStyle(
+      fontSize: 18,
+      color: Colors.black,
+      fontWeight: FontWeight.w600,
+      height: 1.3,
+    ),
   ),
   inputDecorationTheme: const InputDecorationTheme(
     labelStyle: TextStyle(color: Colors.black),
@@ -123,6 +129,12 @@ ThemeData darkTheme = ThemeData(
     bodySmall: TextStyle(
       fontSize: 8,
       color: Colors.grey
+    ),
+    titleMedium: TextStyle(
+      fontSize: 18,
+      color: Colors.white,
+      fontWeight: FontWeight.w600,
+      height: 1.3,
     ),
   ),
   inputDecorationTheme:const InputDecorationTheme(

@@ -56,7 +56,7 @@ class FeedsScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-               CircleAvatar(
+              CircleAvatar(
                 radius: 20,
                 backgroundImage: CachedNetworkImageProvider('${userModel?.image}'),
               ),

@@ -155,6 +155,7 @@ PreferredSizeWidget defaultAppBar({
           color: defaultColor,
         ),
       ),
+      titleSpacing: 0.0,
       title: Text(title ?? '',style:const TextStyle(color: defaultColor),),
       actions: actions,
 

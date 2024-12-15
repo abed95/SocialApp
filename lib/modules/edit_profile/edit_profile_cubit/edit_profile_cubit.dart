@@ -19,22 +19,7 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
   //Change ProfileImage
   File? profileImage;
   var picker = ImagePicker();
-  // Future<void> getProfileImage() async {
-  //   emit(EditProfileImageLoadingStates());
-  //   final pickedFile = await picker.pickImage(
-  //     source: ImageSource.gallery,
-  //   );
-  //   if (pickedFile != null) {
-  //     profileImage = File(pickedFile.path);
-  //     emit(EditProfileImageSuccessStates());
-  //   } else {
-  //     showToast(message: 'No image selected', state: ToastStates.ERROR);
-  //     emit(EditProfileImageErrorStates('No Image Selected'));
-  //   }
-  // }
 
-  //Change Cover Image
-  //Select Image
   Future<void> getProfileImage() async {
     emit(EditProfileImageLoadingStates());
     final pickedFile = await picker.pickImage(
@@ -47,8 +32,9 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
         bio: originalBio ?? userModel?.bio ?? '',
         phone: originalPhone ?? userModel?.phone ?? '',
         profileImage: profileImage,
-        coverImage: coverImage,
+        coverImage: originalCoverImage,
       );
+      await uploadProfileImage();
       emit(EditProfileImageSuccessStates());
     } else {
       showToast(message: 'No image selected', state: ToastStates.ERROR);
@@ -83,18 +69,21 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
         name: originalName ?? userModel?.name ?? '',
         bio: originalBio ?? userModel?.bio ?? '',
         phone: originalPhone ?? userModel?.phone ?? '',
-        profileImage: profileImage,
+        profileImage: originalProfileImage,
         coverImage: coverImage,
       );
+      uploadProfileCover();
       emit(EditProfileCoverSuccessStates());
     } else {
       showToast(message: 'No image selected', state: ToastStates.ERROR);
       emit(EditProfileCoverErrorStates('No Image Selected'));
     }
   }
+
   //////////////////
   String? profileImageUrl;
-  void uploadProfileImage() {
+  Future<void> uploadProfileImage() async{
+    emit(EditProfileUploadImageProfileLoadingStates());
     if(profileImage != null){
     firebase_storage.FirebaseStorage.instance
         .ref()
@@ -107,10 +96,12 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
         print('Url uploaded value EPC 57:: $onValue');
       }).catchError((onError) {
         profileImageUrl = userModel?.image;
+        print('uploadProfileImage EPC 114 ::>${onError.toString()}');
         emit(EditProfileUploadImageProfileErrorStates(onError.toString()));
       });
     }).catchError((onError) {
       profileImageUrl = userModel?.image;
+      print('uploadProfileImage EPC 119 ::>${onError.toString()}');
       emit(EditProfileUploadImageProfileErrorStates(onError.toString()));
     });
     }
@@ -118,7 +109,8 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
 
   //Upload Cover to Fire store Storage
   String? profileCoverUrl;
-  void uploadProfileCover() {
+  Future<void> uploadProfileCover() async{
+    emit(EditProfileUploadCoverLoadingStates());
     if(coverImage != null){
     firebase_storage.FirebaseStorage.instance
         .ref()
@@ -141,14 +133,8 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
   }
 
   //Update user data
-  void updateUser({String? name, String? phone, String? bio}) {
+  Future<void> updateUser({String? name, String? phone, String? bio}) async{
     emit(EditProfileUpdateUserLoadingStates());
-    if(profileImage != null){
-      uploadProfileImage();
-    }
-    if(coverImage != null){
-      uploadProfileCover();
-    }
     UserModel model = UserModel(
       name: name ?? userModel?.name,
       phone: phone ?? userModel?.phone,
@@ -160,7 +146,7 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
       isEmailVerified: false,
 
     );
-    FirebaseFirestore.instance
+  await  FirebaseFirestore.instance
         .collection('users')
         .doc(userModel?.userID)
         .update(model.toMap())
@@ -176,20 +162,20 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
           // Save UserModel to SharedPreferences
           await CacheHelper.saveUserData(model);
           // Emit success state with userModel
+          await CacheHelper.getUserDataNew().then((onValue){
+            userModel = onValue;
+            emit(EditProfileUpdateUserSuccessStates());
+          }).catchError((onError){
+            print('userUpdated data Error 169 EPC :${onError.toString()} ');
+            EditProfileUpdateUserErrorStates(onError.toString());
+          });
         } else {
-          print('userUpdated data Error 133 EPC :${onError.toString()} ');
+          print('userUpdated data Error 173 EPC :${onError.toString()} ');
           EditProfileUpdateUserErrorStates(onError.toString());
         }
       }).catchError((onError) {
          EditProfileUpdateUserErrorStates(onError.toString());
        });
-      CacheHelper.getUserDataNew().then((onValue){
-            userModel = onValue;
-            emit(EditProfileUpdateUserSuccessStates());
-          }).catchError((onError){
-            print('userUpdated data Error 143 EPC :${onError.toString()} ');
-            EditProfileUpdateUserErrorStates(onError.toString());
-          });
     })
         .catchError((onError) {
       print('userUpdated data Error 148 EPC :${onError.toString()} ');
@@ -234,9 +220,9 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
         phone != originalPhone ||
         profileImage != originalProfileImage ||
         coverImage != originalCoverImage;
-
     if (hasChanges != newHasChanges) {
       hasChanges = newHasChanges;
+      print('checkForChanges 240::hasChanges=> $hasChanges');
       emit(EditProfileChangedState());
     }
   }

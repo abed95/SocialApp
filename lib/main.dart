@@ -9,6 +9,7 @@ import 'package:socialapp/shared/bloc_observer.dart';
 import 'package:socialapp/shared/network/local/cache_helper.dart';
 import 'package:socialapp/shared/styles/themes.dart';
 import 'layouts/social_layout/social_cubit/social_cubit.dart';
+import 'modules/chats/chats_cubit/chats_cubit.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context)=> SocialCubit()),
         BlocProvider(create: (context)=> SettingsCubit()),
+        BlocProvider(create: (context)=>ChatsCubit()..getUsers()),
       ],
       child: BlocConsumer<SocialCubit,SocialStates>(
           listener: (context,state){},
