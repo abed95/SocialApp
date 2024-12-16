@@ -36,6 +36,7 @@ class ChatsCubit extends Cubit<ChatsStates> {
       senderID: userModel?.userID,
       receiverID: receiverID,
       text: text,
+      dateTime: dateTime,
     );
     //set Sender chat message
     FirebaseFirestore.instance
